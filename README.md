@@ -4,7 +4,7 @@
 
 ## receiver
 
-Desde máquina Linux donde se va a recibir el streming:
+Desde máquina Linux donde se va a recibir el streaming:
 
 ```
 $ cd ~/git/git/streaming_receiver/receiver
