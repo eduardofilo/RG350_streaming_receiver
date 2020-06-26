@@ -24,10 +24,10 @@ $ docker exec -it RG350_buster_buildroot /bin/bash
 
 # Streaming con Gambatte y FCeux
 
-Emiten en 320x240 y 16bit en pixel_format rgb565.
+Emiten en 320x240 y 16bit en pixel_format rgb565le.
 
 ```
-$ ssh root@10.1.1.2 -- ./streaming | ./receiver | ffplay -vcodec rawvideo -f rawvideo -pixel_format rgb565 -video_size 320x240 -framerate 60 -i -
+$ ssh root@10.1.1.2 -- ./streaming | ./receiver | ffplay -vcodec rawvideo -f rawvideo -pixel_format rgb565le -video_size 320x240 -framerate 30 -i -
 ```
 
 # Streaming con GMenu2X
@@ -35,5 +35,5 @@ $ ssh root@10.1.1.2 -- ./streaming | ./receiver | ffplay -vcodec rawvideo -f raw
 Emite en 320x240 y 32bit en pixel_format bgr0.
 
 ```
-$ ssh root@10.1.1.2 -- ./streaming | ./receiver | ffplay -vcodec rawvideo -f rawvideo -pixel_format bgr0 -video_size 320x240 -framerate 60 -i -
+$ ssh root@10.1.1.2 -- ./streaming | ./receiver | ffplay -vcodec rawvideo -f rawvideo -pixel_format bgr0 -video_size 320x240 -framerate 30 -i -
 ```

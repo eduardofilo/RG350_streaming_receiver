@@ -39,7 +39,7 @@ int main(int argc, char const* argv[]) {
   int delay = 0;
 
   for (;;) {
-    delay = ((1000/60) - (current_timestamp() - beforeTs)) * 1000;
+    delay = ((1000/30) - (current_timestamp() - beforeTs)) * 1000;
     if (delay > 0)
       usleep(delay);
     beforeTs = current_timestamp();
