@@ -28,11 +28,13 @@ int main() {
 
     /**********************************VSCREEN DATA************************************/
     printf("\nVscreen Info:-\n");
-    printf(" Xres   = %4ld | Yres   = %4ld\n",vscreeninfo.xres,vscreeninfo.yres);
-    printf(" BPP    = %4ld | Height = %4ld | Width = %4ld\n",vscreeninfo.bits_per_pixel,
+    printf(" Xres         = %4ld | Yres         = %4ld\n",vscreeninfo.xres,vscreeninfo.yres);
+    printf(" Xres_virtual = %4ld | Yres_virtual = %4ld\n",vscreeninfo.xres_virtual,vscreeninfo.yres_virtual);
+    printf(" Xoffset      = %4ld | Yoffset      = %4ld\n",vscreeninfo.xoffset,vscreeninfo.yoffset);
+    printf(" BPP          = %4ld | Height       = %4ld | Width = %4ld\n",vscreeninfo.bits_per_pixel,
                                                              vscreeninfo.height,
                                                              vscreeninfo.width);
-    printf(" Xres_V = %4ld | Yres_V = %4ld\n",vscreeninfo.height,vscreeninfo.width);
+    printf(" Xres_V       = %4ld | Yres_V       = %4ld\n",vscreeninfo.height,vscreeninfo.width);
     printf(" Pixel format : RGBX_%ld%ld%ld%ld\n",vscreeninfo.red.length,
                                                  vscreeninfo.green.length,
                                                  vscreeninfo.blue.length,
