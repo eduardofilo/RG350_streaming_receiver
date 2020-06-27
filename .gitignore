@@ -4,3 +4,5 @@ receiver/receiver.o
 streaming/lz4.o
 streaming/streaming
 streaming/streaming.o
+screeninfo/screeninfo.o
+screeninfo/screeninfo
