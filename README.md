@@ -140,3 +140,9 @@ Hay que adaptar el tamaño del buffer y el pixel_format en el script `convert.py
 * `bgr555le`: PCSX4All (15 bit)
 * `rgb565le`: FCeux (16 bit)
 * `bgr0`: GMenu2X (32 bit)
+
+Para conocer todos los pixel_format disponibles, ejecutar el comando:
+
+```
+$ ffplay -pix_fmts
+```
