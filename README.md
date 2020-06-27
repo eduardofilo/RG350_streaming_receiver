@@ -1,7 +1,7 @@
 ## Enlaces
 
 * [reStream lz4 streaming](https://gist.github.com/NickHu/95e8e5e1b8b326d2cb46ce461d3ec701)
-* [Tutorial 1: Intro to Low-Level Graphics on Linux](http://betteros.org/tut/graphics1.php)
+* [Tutorial 1: Intro to Low-Level Graphics on Linux](http://betteros.org/tut/graphics1.php#fbdev)
 
 ## Compilación
 
