@@ -3,6 +3,7 @@
 * [reStream lz4 streaming](https://gist.github.com/NickHu/95e8e5e1b8b326d2cb46ce461d3ec701)
 * [The Frame Buffer Device API](https://www.kernel.org/doc/Documentation/fb/api.txt)
 * [Tutorial 1: Intro to Low-Level Graphics on Linux](http://betteros.org/tut/graphics1.php#fbdev)
+* [Cómo programar el framebuffer en Linux](https://rastersoft.com/articulos/fbuffer.html)
 
 ## Compilación
 
@@ -50,9 +51,11 @@ Se puede obtener la metainformación del framebuffer con el ejecutable screeninf
 
 ```
 Vscreen Info:-
- Xres   =  320 | Yres   =  240
- BPP    =   32 | Height =   -1 | Width =   -1
- Xres_V =   -1 | Yres_V =   -1
+ Xres         =  320 | Yres         =  240
+ Xres_virtual =  320 | Yres_virtual =  720
+ Xoffset      =    0 | Yoffset      =    0
+ BPP          =   32 | Height       =   -1 | Width =   -1
+ Xres_V       =   -1 | Yres_V       =   -1
  Pixel format : RGBX_8888
  Begin of bitfields(Byte ordering):-
   Red    : 16
@@ -73,9 +76,11 @@ Fscreen Info:-
 
 ```
 Vscreen Info:-
- Xres   =  320 | Yres   =  240
- BPP    =   16 | Height =   -1 | Width =   -1
- Xres_V =   -1 | Yres_V =   -1
+ Xres         =  320 | Yres         =  240
+ Xres_virtual =  320 | Yres_virtual =  720
+ Xoffset      =    0 | Yoffset      =    0
+ BPP          =   16 | Height       =   -1 | Width =   -1
+ Xres_V       =   -1 | Yres_V       =   -1
  Pixel format : RGBX_5650
  Begin of bitfields(Byte ordering):-
   Red    : 11

@@ -52,6 +52,9 @@ int main() {
     printf(" Device ID : %s\n",fscreeninfo.id);
     printf(" Start of FB physical address : %ld\n",fscreeninfo.smem_start);
     printf(" Length of FB : %ld\n",fscreeninfo.smem_len); //Size of framebuffer in bytes
+    printf(" XPan step for hardware panning : %ld\n",fscreeninfo.xpanstep);
+    printf(" YPan step for hardware panning : %ld\n",fscreeninfo.ypanstep);
+    printf(" YWrap step for hardware ywrap : %ld\n",fscreeninfo.ywrapstep);
     printf(" Length of Line : %ld\n",fscreeninfo.line_length);
     printf(" Start of MMIO physical address : %ld\n",fscreeninfo.mmio_start);
     printf(" Length of MMIO : %ld\n",fscreeninfo.mmio_len);
