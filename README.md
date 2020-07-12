@@ -87,6 +87,9 @@ Fscreen Info:-
  Device ID : jz-lcd
  Start of FB physical address : 205520896
  Length of FB : 3686400
+ XPan step for hardware panning : 1
+ YPan step for hardware panning : 1
+ YWrap step for hardware ywrap : 0
  Length of Line : 1280
  Start of MMIO physical address : 0
  Length of MMIO : 0
