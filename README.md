@@ -117,6 +117,12 @@ Ejecutando este binario en distintos programas ejecutándose en la RG se han enc
 |PCSX4All|640|480|15|bgr555le|3|
 |Gambatte-M|640|480|16|rgb565le|3|
 
+Para conocer todos los pixel_format disponibles, ejecutar el comando:
+
+```
+$ ffplay -pix_fmts
+```
+
 ## Sesión de streaming
 
 Por ejemplo con FCeux en ejecución. Como vemos en la tabla anterior el framebuffer en este caso trabaja a 320x240 y pixel_format rgb565le. Para visualizar al vuelo el streaming desde la consola ejecutaremos así desde el directorio donde se encuentre el binario `receiver` en el ordenador que recibirá el streaming (cambiaremos los parámetros anteriores en `pixel_format` y `video_size`):
@@ -158,9 +164,3 @@ $ python3 convert.py buffer.bin
 ```
 
 Hay que adaptar el tamaño del buffer y el pixel_format en el script `convert.py`.
-
-Para conocer todos los pixel_format disponibles, ejecutar el comando:
-
-```
-$ ffplay -pix_fmts
-```
