@@ -119,10 +119,24 @@ Ejecutando este binario en distintos programas ejecutándose en la RG se han enc
 
 ## Sesión de streaming
 
-Por ejemplo con FCeux en ejecución. Como vemos en la tabla anterior el framebuffer en este caso trabaja a 320x240 y 16bit en pixel_format rgb565le.
+Por ejemplo con FCeux en ejecución. Como vemos en la tabla anterior el framebuffer en este caso trabaja a 320x240 y pixel_format rgb565le. Para visualizar al vuelo el streaming desde la consola ejecutaremos así desde el directorio donde se encuentre el binario `receiver` en el ordenador que recibirá el streaming (cambiaremos los parámetros anteriores en `pixel_format` y `video_size`):
 
 ```
 $ ssh root@10.1.1.2 -- ./streaming | ./receiver | ffplay -vcodec rawvideo -f rawvideo -pixel_format rgb565le -video_size 320x240 -framerate 30 -i -
+```
+
+## Conversión a video
+
+Si en lugar de visualizar al vuelo preferimos capturar el streaming ejecutaremos así:
+
+```
+$ ssh root@10.1.1.2 -- ./streaming | ./receiver > dump.bin
+```
+
+Finalmente convertiremos a vide ejecutando:
+
+```
+$ ffmpeg -vcodec rawvideo -f rawvideo -pixel_format rgb565le -video_size 320x240 -framerate 30 -i dump.bin -vcodec h264 out.mp4
 ```
 
 ## Captura y conversión del framebuffer a PNG
