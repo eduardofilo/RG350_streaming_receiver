@@ -7,9 +7,22 @@
 
 ## Compilación
 
+#### Instalación código
+
+```
+$ cd ~/git
+$ git clone https://github.com/eduardofilo/streaming_receiver.git
+```
+
+Contiene los siguientes módulos:
+
+* `receiver`: Recoge el streaming de frames comprimodos que genera `streaming` por la entrada estándar y genera por la salida estándar un streaming de rawvideo.
+* `streaming`: Lee el framebuffer y emite por la salida estándar un streaming de frames comprimidos.
+* `screeninfo`: Muestra los parámetros del framebuffer actual. Sirve para averiguar la resolución de la pantalla y la profundidad de color de cada píxel.
+
 #### receiver
 
-Desde máquina Linux donde se va a recibir el streaming:
+Lo compilamos desde máquina Linux donde se va a recibir el streaming:
 
 ```
 $ cd ~/git/git/streaming_receiver/receiver
@@ -18,36 +31,43 @@ $ make
 
 #### streaming
 
-Desde [Docker con toolchain para RG350](/2020-05-25-rg350_docker_buildroot.html#compilacion-de-distribucion-od-contrib):
+Necesitamos el contenedor [Docker con toolchain para RG350](/2020-05-25-rg350_docker_buildroot.html#compilacion-de-distribucion-od-contrib). La primera vez lo instalamos:
+
+```
+$ docker run -it -v ~/git:/root/git --name RG350_buster_buildroot eduardofilo/rg350_buster_buildroot
+```
+
+Posteriormente sólo necesitamos arrancarlo:
 
 ```
 $ docker container start RG350_buster_buildroot
 $ docker exec -it RG350_buster_buildroot /bin/bash
-# ~/git/streaming_receiver/streaming
+```
+
+Finalmente compilamos:
+
+```
+# cd ~/git/streaming_receiver/streaming
 # make
 ```
 
-## Streaming con Gambatte y FCeux
-
-Emiten en 320x240 y 16bit en pixel_format rgb565le.
+Y transferimos a la RG ya que se ejecutará en ella:
 
 ```
-$ ssh root@10.1.1.2 -- ./streaming | ./receiver | ffplay -vcodec rawvideo -f rawvideo -pixel_format rgb565le -video_size 320x240 -framerate 30 -i -
+# scp streaming root@10.1.1.2:
 ```
 
-## Streaming con GMenu2X
+#### screeninfo
 
-Emite en 320x240 y 32bit en pixel_format bgr0.
+Compilamos también desde el contenedor [Docker con toolchain para RG350](/2020-05-25-rg350_docker_buildroot.html#compilacion-de-distribucion-od-contrib) y transferimos a la RG:
 
 ```
-$ ssh root@10.1.1.2 -- ./streaming | ./receiver | ffplay -vcodec rawvideo -f rawvideo -pixel_format bgr0 -video_size 320x240 -framerate 30 -i -
+# cd ~/git/streaming_receiver/screeninfo
+# make
+# scp screeninfo root@10.1.1.2:
 ```
 
-## Información sobre el FrameBuffer
-
-Se puede obtener la metainformación del framebuffer con el ejecutable screeninfo. La metainformación varía según el modo de pantalla:
-
-#### En GMenu2X
+Ejecutando por ejemplo este binario en la RG (por SSH por ejemplo) mientras se está ejecutando por ejemplo GMenu2X obtenemos la siguiente salida:
 
 ```
 Vscreen Info:-
@@ -72,54 +92,33 @@ Fscreen Info:-
  Length of MMIO : 0
 ```
 
-#### En FCeux
+Los siguientes elementos importantes se interpretan así:
+
+* Xres: Resolución horizontal de cada frame.
+* Yres: Resolución vertical de cada frame.
+* Xres_virtual: Resolución horizontal del framebuffer.
+* Yres_virtual: Resolución horizontal del framebuffer. => `Yres_virtual / Yres` = Número de frames en el buffer.
+* Yoffset: Primera linea vertical del frame activo en el buffer (será Yres * el número de frame activo empezando a contar en 0).
+* BPP: Bits por pixel.
+* Byte ordering: Nos indica en qué orden llegan los bits de cada uno de los tres colores y la transparencia.
+* Length of FB: Tamaño total del framebuffer en bytes.
+* Length of Line: Tamaño de cada linea horizontal del framebuffer en bytes.
+
+Ejecutando este binario en distintos programas ejecutándose en la RG se han encontrado los siguientes parámetros:
+
+|Programa|Xres|Yres|BPP|pixel_format|Frames en buffer|
+|:-------|:---|:---|:--|:-----------|:---------------|
+|GMenu2X|320|240|32|bgr0|3|
+|DinguxCmdr|320|240|16|rgb565le| |
+|FCeux|320|240|16|rgb565le| |
+|PCSX4All|640|480|15|bgr555le| |
+
+## Sesión de streaming
+
+Por ejemplo con FCeux en ejecución. Como vemos en la tabla anterior el framebuffer en este caso trabaja a 320x240 y 16bit en pixel_format rgb565le.
 
 ```
-Vscreen Info:-
- Xres         =  320 | Yres         =  240
- Xres_virtual =  320 | Yres_virtual =  720
- Xoffset      =    0 | Yoffset      =    0
- BPP          =   16 | Height       =   -1 | Width =   -1
- Xres_V       =   -1 | Yres_V       =   -1
- Pixel format : RGBX_5650
- Begin of bitfields(Byte ordering):-
-  Red    : 11
-  Blue   : 0
-  Green  : 5
-  Transp : 0
-
-Fscreen Info:-
- Device ID : jz-lcd
- Start of FB physical address : 205520896
- Length of FB : 3686400
- Length of Line : 640
- Start of MMIO physical address : 0
- Length of MMIO : 0
-```
-
-#### En PCSX4All durante el arranque con los logs de Sony
-
-```
-Vscreen Info:-
- Xres         =  640 | Yres         =  448
- Xres_virtual =  640 | Yres_virtual = 1344
- Xoffset      =    0 | Yoffset      =  896
- BPP          =   15 | Height       =   -1 | Width =   -1
- Xres_V       =   -1 | Yres_V       =   -1
- Pixel format : RGBX_5551
- Begin of bitfields(Byte ordering):-
-  Red    : 0
-  Blue   : 10
-  Green  : 5
-  Transp : 15
-
-Fscreen Info:-
- Device ID : jz-lcd
- Start of FB physical address : 205520896
- Length of FB : 3686400
- Length of Line : 1280
- Start of MMIO physical address : 0
- Length of MMIO : 0
+$ ssh root@10.1.1.2 -- ./streaming | ./receiver | ffplay -vcodec rawvideo -f rawvideo -pixel_format rgb565le -video_size 320x240 -framerate 30 -i -
 ```
 
 ## Captura y conversión del framebuffer a PNG
@@ -140,11 +139,7 @@ Para convertir el dump del framebuffer anterior ejecutamos `convert.py` así:
 $ python3 convert.py buffer.bin
 ```
 
-Hay que adaptar el tamaño del buffer y el pixel_format en el script `convert.py`. Estos son algunos de los utilizados por distintos programas:
-
-* `bgr555le`: PCSX4All (15 bit)
-* `rgb565le`: FCeux (16 bit)
-* `bgr0`: GMenu2X (32 bit)
+Hay que adaptar el tamaño del buffer y el pixel_format en el script `convert.py`.
 
 Para conocer todos los pixel_format disponibles, ejecutar el comando:
 

@@ -3,15 +3,12 @@
 #include <sys/mman.h>
 #include <fcntl.h>
 #include <time.h>
+#include <linux/fb.h>
 
 #include "lz4.h"
 
-enum {
-  HEIGHT = 240,
-  WIDTH = 320,
-  BYTES_PER_PIXEL = 4,
-  WINDOW_BYTES = WIDTH*HEIGHT*BYTES_PER_PIXEL
-};
+#define FPS 30
+
 
 long long current_timestamp() {
     struct timeval te;
@@ -21,37 +18,78 @@ long long current_timestamp() {
     return milliseconds;
 }
 
+
 int main(int argc, char const* argv[]) {
-  int fb0 = open("/dev/fb0", O_RDONLY);
-  char *fbp = mmap(NULL, WINDOW_BYTES, PROT_READ, MAP_SHARED, fb0, 0);
 
-  // handle failed to open
+    struct fb_fix_screeninfo finfo;
+    struct fb_var_screeninfo vinfo;
 
-  LZ4_stream_t lz4Stream_body;
-  LZ4_stream_t* lz4Stream = &lz4Stream_body;
+    int fb_fd = open("/dev/fb0", O_RDONLY);
 
-  LZ4_initStream(lz4Stream, sizeof(*lz4Stream));
-
-  char compressed[LZ4_COMPRESSBOUND(WINDOW_BYTES)];
-  int compressed_size = 0;
-
-  long long beforeTs = current_timestamp(); //TS in MS
-  int delay = 0;
-
-  for (;;) {
-    delay = ((1000/30) - (current_timestamp() - beforeTs)) * 1000;
-    if (delay > 0)
-      usleep(delay);
-    beforeTs = current_timestamp();
-    compressed_size = LZ4_compress_fast_continue(lz4Stream, fbp, compressed, WINDOW_BYTES, sizeof(compressed), 1);
-    if (compressed_size == 0) {
-      break;
+    //Get variable screen information
+    if (ioctl(fb_fd, FBIOGET_VSCREENINFO, &vinfo) == -1) {
+        //printf("Error reading variable information\n");
+        exit(0);
+    }
+    //Get fixed screen information
+    if (ioctl(fb_fd, FBIOGET_FSCREENINFO, &finfo) == -1) {
+        //printf("Error reading fixed information\n");
+        exit(0);
     }
 
-    fwrite(&compressed_size, sizeof(compressed_size), 1, stdout);
-    fwrite(compressed, 1, compressed_size, stdout);
-  };
+    int buffersize = vinfo.yres_virtual * finfo.line_length;
+    //printf("buffersize: %d\n", buffersize);
+    int screensize = vinfo.yres * finfo.line_length;
+    //printf("screensize: %d\n", screensize);
+    uint8_t *fbp = mmap(0, buffersize, PROT_READ, MAP_SHARED, fb_fd, (off_t)0);
+    uint8_t *bbp;
+    //printf("Start of FB physical address : %ld\n",fbp);
+    uint8_t *buffer = malloc(screensize);
+    //printf("Start of buffer physical address : %ld\n",buffer);
 
-  puts("Error in compression\n");
-  return 1;
+
+    LZ4_stream_t lz4Stream_body;
+    LZ4_stream_t* lz4Stream = &lz4Stream_body;
+
+    LZ4_initStream(lz4Stream, sizeof(*lz4Stream));
+
+    char compressed[LZ4_COMPRESSBOUND(screensize)];
+    int compressed_size = 0;
+
+    long long beforeTs = current_timestamp(); //TS in MS
+    int delay = 0;
+
+    //for (int i=0;i<=2;i++) {
+    for (;;) {
+        delay = ((1000/FPS) - (current_timestamp() - beforeTs)) * 1000;
+        if (delay > 0)
+            usleep(delay);
+        beforeTs = current_timestamp();
+
+        //Get variable screen information
+        if (ioctl(fb_fd, FBIOGET_VSCREENINFO, &vinfo) == -1) {
+            //printf("Error reading variable information\n");
+            exit(0);
+        }
+
+        bbp = fbp+vinfo.yoffset*finfo.line_length;
+        //printf("yoffset: %d\n", vinfo.yoffset);
+        //printf("Pointer to fbp physical address : %ld\n",fbp);
+        //printf("Pointer to bbp physical address : %ld\n",bbp);
+
+        memcpy(buffer, bbp, screensize);
+        compressed_size = LZ4_compress_fast_continue(lz4Stream, buffer, compressed, screensize, sizeof(compressed), 1);
+        if (compressed_size == 0) {
+            exit(0);
+        }
+
+        //printf("screensize: %d\n", sizeof(screensize));
+        //printf("compressed_size: %d\n", sizeof(compressed_size));
+        fwrite(&screensize, sizeof(screensize), 1, stdout);
+        fwrite(&compressed_size, sizeof(compressed_size), 1, stdout);
+        fwrite(compressed, 1, compressed_size, stdout);
+    };
+
+    puts("Error in compression\n");
+    return 1;
 }
