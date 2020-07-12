@@ -112,6 +112,7 @@ Ejecutando este binario en distintos programas ejecutándose en la RG se han enc
 |DinguxCmdr|320|240|16|rgb565le|1|
 |FCeux|320|240|16|rgb565le|3|
 |PCSX4All|640|480|15|bgr555le|3|
+|Gambatte-M|640|480|16|rgb565le|3|
 
 ## Sesión de streaming
 

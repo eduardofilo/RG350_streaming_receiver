@@ -5,8 +5,8 @@ from ffpyplayer.writer import MediaWriter
 
 
 # Params
-w = 320                 # get from fb_var_screeninfo.xres
-line_length = 640       # get from fb_fix_screeninfo.line_length
+w = 640                  # get from fb_var_screeninfo.xres
+line_length = 1280       # get from fb_fix_screeninfo.line_length
 fmt = 'rgb565le'
 
 # GMenu2X
@@ -28,6 +28,11 @@ fmt = 'rgb565le'
 #w = 640                 # get from fb_var_screeninfo.xres
 #line_length = 1280      # get from fb_fix_screeninfo.line_length
 #fmt = 'bgr555le'
+
+# Gambatte-M
+#w = 640                 # get from fb_var_screeninfo.xres
+#line_length = 1280      # get from fb_fix_screeninfo.line_length
+#fmt = 'rgb565le'
 
 
 buffer_size = 3686400   # get form fb_fix_screeninfo.smem_len
