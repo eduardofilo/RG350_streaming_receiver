@@ -97,7 +97,7 @@ Los siguientes elementos importantes se interpretan así:
 * Xres: Resolución horizontal de cada frame.
 * Yres: Resolución vertical de cada frame.
 * Xres_virtual: Resolución horizontal del framebuffer.
-* Yres_virtual: Resolución horizontal del framebuffer. => `Yres_virtual / Yres` = Número de frames en el buffer.
+* Yres_virtual: Resolución horizontal del framebuffer.
 * Yoffset: Primera linea vertical del frame activo en el buffer (será Yres * el número de frame activo empezando a contar en 0).
 * BPP: Bits por pixel.
 * Byte ordering: Nos indica en qué orden llegan los bits de cada uno de los tres colores y la transparencia.
@@ -108,10 +108,10 @@ Ejecutando este binario en distintos programas ejecutándose en la RG se han enc
 
 |Programa|Xres|Yres|BPP|pixel_format|Frames en buffer|
 |:-------|:---|:---|:--|:-----------|:---------------|
-|GMenu2X|320|240|32|bgr0|3|
-|DinguxCmdr|320|240|16|rgb565le| |
-|FCeux|320|240|16|rgb565le| |
-|PCSX4All|640|480|15|bgr555le| |
+|GMenu2X|320|240|32|bgr0|2|
+|DinguxCmdr|320|240|16|rgb565le|1|
+|FCeux|320|240|16|rgb565le|3|
+|PCSX4All|640|480|15|bgr555le|3|
 
 ## Sesión de streaming
 
