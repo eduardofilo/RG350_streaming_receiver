@@ -140,7 +140,7 @@ Si en lugar de visualizar al vuelo preferimos capturar el streaming ejecutaremos
 $ ssh root@10.1.1.2 -- ./streaming | ./receiver > dump.bin
 ```
 
-Finalmente convertiremos a vide ejecutando:
+Finalmente convertiremos a video ejecutando:
 
 ```
 $ ffmpeg -vcodec rawvideo -f rawvideo -pixel_format rgb565le -video_size 320x240 -framerate 30 -i dump.bin -vcodec h264 out.mp4
