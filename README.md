@@ -148,7 +148,7 @@ $ ffmpeg -vcodec rawvideo -f rawvideo -pixel_format rgb565le -video_size 320x240
 
 ## Captura y conversión del framebuffer a PNG
 
-Según vemos en la información que obtiene screeninfo el framebuffer es bastante más grande de lo que sería necesario para contener toda la pantalla. Por ejemplo en el caso de GMenu2X la pantalla tiene 320x240 y 4 bytes por pixel. Por tanto sería suficiente 320*240*4 = 307200 bytes de buffer, pero sin embargo tiene 3686400, es decir suficiente para contener 3686400/307200 = 12 pantallas.
+Según vemos en la información que obtiene screeninfo el framebuffer es bastante más grande de lo que sería necesario para contener toda la pantalla. Por ejemplo en el caso de GMenu2X la pantalla tiene 320x240 y 4 bytes por pixel. Por tanto sería suficiente `320*240*4 = 307200` bytes de buffer, pero sin embargo tiene 3686400, es decir suficiente para contener `3686400/307200 = 12` pantallas.
 
 Podemos capturar el buffer entero ejecutando lo siguiente en la RG:
 
