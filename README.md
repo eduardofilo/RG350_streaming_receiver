@@ -153,17 +153,21 @@ Según vemos en la información que obtiene screeninfo el framebuffer es bastant
 Podemos capturar el buffer entero ejecutando lo siguiente en la RG:
 
 ```
-# cp /dev/fb0 buffer.bin
+# cp /dev/fb0 buffer.data
 ```
 
-Transfiriendo el fichero `buffer.bin` al ordenador y convirtiéndolo a PNG con el pequeño programa `convert.py` en Python (necesita que tengamos instalado el módulo `ffpyplayer`), vemos en la imagen resultante que en el buffer se utilizan sólo el espacio correspondiente a los dos primeros frames de los 12 posibles. De hecho se dibujan en esas posiciones los distintos cambios en la pantalla alternativamente, es decir, primero en la posición 0 y luego en la 1, volviendo a la 0 a continuación.
+Transfiriendo el fichero `buffer.data` al ordenador y convirtiéndolo a PNG con el pequeño programa `convert.py` en Python (necesita que tengamos instalado el módulo `ffpyplayer`), vemos en la imagen resultante que en el buffer se utilizan sólo el espacio correspondiente a los dos primeros frames de los 12 posibles. De hecho se dibujan en esas posiciones los distintos cambios en la pantalla alternativamente, es decir, primero en la posición 0 y luego en la 1, volviendo a la 0 a continuación.
 
 Para convertir el dump del framebuffer anterior ejecutamos `convert.py` así:
 
 ```
-$ python3 convert.py buffer.bin
+$ python3 convert.py buffer.data
 ```
 
 Hay que adaptar el tamaño del buffer y el pixel_format en el script `convert.py`.
 
-En lugar de utilizar el script convert.py, podemos utilizar [esta](https://rawpixels.net/) utilidad online. Otra opción es abrir con Gimp seleccionando el formato `Datos de imagen en bruto`. Aparecerá un cuadro de diálogo donde podremos ajustar la resolución y el pixel_format.
+En lugar de utilizar el script convert.py, podemos utilizar [esta](https://rawpixels.net/) utilidad online.
+
+Otra opción es abrir con Gimp seleccionando el formato `Datos de imagen en bruto`. Aparecerá un cuadro de diálogo donde podremos ajustar la resolución y el pixel_format.
+
+![1941](1941.png)
