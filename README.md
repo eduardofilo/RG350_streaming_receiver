@@ -165,3 +165,5 @@ $ python3 convert.py buffer.bin
 ```
 
 Hay que adaptar el tamaño del buffer y el pixel_format en el script `convert.py`.
+
+En lugar de utilizar el script convert.py, podemos utilizar [esta](https://rawpixels.net/) utilidad online. Otra opción es abrir con Gimp seleccionando el formato `Datos de imagen en bruto`. Aparecerá un cuadro de diálogo donde podremos ajustar la resolución y el pixel_format.
