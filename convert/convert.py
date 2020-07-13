@@ -34,6 +34,11 @@ fmt = 'rgb565le'
 #line_length = 1280      # get from fb_fix_screeninfo.line_length
 #fmt = 'rgb565le'
 
+# FBA 1941
+#w = 384                 # get from fb_var_screeninfo.xres
+#line_length = 768       # get from fb_fix_screeninfo.line_length
+#fmt = 'rgb565le'
+
 
 buffer_size = 3686400   # get form fb_fix_screeninfo.smem_len
 h = buffer_size / line_length
