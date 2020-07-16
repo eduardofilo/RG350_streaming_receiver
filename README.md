@@ -124,6 +124,22 @@ Para conocer todos los pixel_format disponibles, ejecutar el comando:
 $ ffplay -pix_fmts
 ```
 
+Hay un comando en el sistema que también nos permite interrogar al framebuffer sobre su modo. Es `fbset`. Ejecutándolo sin argumentos nos ofrece mucha información. Por ejemplo, ejecutándolo con GMenu2X abierto obtenemos lo siguiente:
+
+```
+RG350M:/media/data/local/home # fbset
+
+mode "320x240-0"
+	# D: 0.000 MHz, H: 0.000 kHz, V: 0.000 Hz
+	geometry 320 240 320 720 32
+	timings 0 16 16 16 4 48 2
+	accel false
+	rgba 8/16,8/8,8/0,8/24
+endmode
+```
+
+Si nos fijamos bien, podemos encontrar la mayoría de los valores que habíamos obtenido antes con `screeninfo`.
+
 ## Sesión de streaming
 
 Por ejemplo con FCeux en ejecución. Como vemos en la tabla anterior el framebuffer en este caso trabaja a 320x240 y pixel_format rgb565le. Para visualizar al vuelo el streaming desde la consola ejecutaremos así desde el directorio donde se encuentre el binario `receiver` en el ordenador que recibirá el streaming (cambiaremos los parámetros anteriores en `pixel_format` y `video_size`):
