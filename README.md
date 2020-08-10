@@ -16,7 +16,7 @@ $ git clone https://github.com/eduardofilo/streaming_receiver.git
 
 Contiene los siguientes módulos:
 
-* `receiver`: Recoge el streaming de frames comprimodos que genera `streaming` por la entrada estándar y genera por la salida estándar un streaming de rawvideo.
+* `receiver`: Recoge el streaming de frames comprimidos que genera `streaming` por la entrada estándar y genera por la salida estándar un streaming de rawvideo.
 * `streaming`: Lee el framebuffer y emite por la salida estándar un streaming de frames comprimidos.
 * `screeninfo`: Muestra los parámetros del framebuffer actual. Sirve para averiguar la resolución de la pantalla y la profundidad de color de cada píxel.
 * `convert.py`: Pequeño script Python para convertir un volcado completo del framebuffer a PNG. Sirve para visualizar el contenido completo del framebuffer en un momento dado para ayudarnos a interpretarlo (por ejemplo para ver si estamos utilizando el pixel_format correcto).
